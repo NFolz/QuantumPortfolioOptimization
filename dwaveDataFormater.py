@@ -1,3 +1,5 @@
+
+
 # stock_tickers = ["ibm","apple","microsoft"]
 stock_tickers = ["ibm_0.125","apple_0.234","microsoft_0.325"]
 
