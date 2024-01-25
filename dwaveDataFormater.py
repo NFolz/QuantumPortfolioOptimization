@@ -1,4 +1,5 @@
-stock_tickers = ["ibm","apple","microsoft"]
+# stock_tickers = ["ibm","apple","microsoft"]
+stock_tickers = ["ibm_0.125","apple_0.234","microsoft_0.325"]
 
 #Penalty coefficient
 q = 0.8
@@ -39,12 +40,17 @@ stocks = {"ibm,apple": 0.38,
 def calculate(store,ticker):
     calculatedResult={}
     for stock in ticker:
+        word = stock.split("_")[0]
         for stock2 in ticker:
-            print (stock + " "+ stock2)
-            calculatedResult.setdefault(stock + "," + stock2,0)
-            calculatedResult[stock + "," + stock2] += store.get(stock + "," + stock, 0)
-            print(calculatedResult[stock + "," + stock2])
-    # print(calculatedResult)
+            word2 = stock.split("_")[2]
+            parts = (stock+","+stock2).split(',')
+            reversed_key = ','.join(reversed(parts))
+            if  reversed_key in calculatedResult:
+                calculatedResult[reversed_key] += store.get(reversed_key, 0)
+            else:
+                calculatedResult.setdefault(stock + "," + stock2,0)
+                calculatedResult[stock+","+stock2] += store.get(stock+","+stock2, 0)
+    print(calculatedResult)
         
 
 # apply penalty coefficient to all values stock vovariance values
