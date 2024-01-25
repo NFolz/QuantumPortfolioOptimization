@@ -9,8 +9,8 @@ q = 0.8
 # updates the returns by applying the penalty term to them
 def updateReturns(returns):
     updatedReturns ={}
-    for stock, covar in returns.items():   
-        result = q*covar   
+    for stock, returned in returns.items():   
+        result = q*returned  
         updatedReturns.setdefault(stock,result)
     return updatedReturns
 

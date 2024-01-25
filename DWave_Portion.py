@@ -1,5 +1,17 @@
 from dwave.system import DWaveSampler, EmbeddingComposite
 import random
+import pandas as pd
+# export DWAVE_API_TOKEN=DEV-9ca6dc0e5f9be13b1512c91ae97f6438af5113a0
+#run that in terminal
+
+from dwave.cloud import Client
+
+# Set your API token
+api_token = "DEV-9ca6dc0e5f9be13b1512c91ae97f6438af5113a0"
+
+# Create a D-Wave cloud client
+client = Client.from_config(token=api_token)
+
 sampler = EmbeddingComposite(DWaveSampler())
 
 def build_relationships(*variables, linear=None, quadratic=None):
@@ -46,10 +58,11 @@ def main():
 
     relationships_dict = build_relationships(*stock_tickers)
 
-    print(relationships_dict)
+    # print(relationships_dict)
 
     sampleset = sampler.sample_qubo(relationships_dict, num_reads=1000)
+    first_pair = next(iter(sampleset.data()))
 
-    print(sampleset)
+    print(first_pair)
 
 main()

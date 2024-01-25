@@ -24,10 +24,16 @@ print(calculated)
 adjustedReturns = updateReturns(returns)
 print(adjustedReturns)
 
+testInput = {"IBM,0,IBM,2":2,}
 
-for stock, val in adjustedReturns.items():
-    search = stock+","+stock
-    print(search)
-    adjustedReturns[stock]+=calculated[search]
+def removingDoublesFromReturns(q,*something,returns):
+    for stock, val in adjustedReturns.items():
+        #Split key by the comma to be able to isolate the two companies being compared
+        words = stock.split(',')
+    
+        if words[0]==words[2]:
+            search = stock+","+stock
+            print(search)
+            adjustedReturns[stock]-=calculated[search]*q
 
 print (adjustedReturns)
