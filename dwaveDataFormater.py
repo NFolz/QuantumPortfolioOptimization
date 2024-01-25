@@ -42,14 +42,14 @@ def calculate(store,ticker):
     for stock in ticker:
         word = stock.split("_")[0]
         for stock2 in ticker:
-            word2 = stock.split("_")[2]
+            word2 = stock2.split("_")[0]
             parts = (stock+","+stock2).split(',')
             reversed_key = ','.join(reversed(parts))
             if  reversed_key in calculatedResult:
-                calculatedResult[reversed_key] += store.get(reversed_key, 0)
+                calculatedResult[reversed_key] += store.get(word+","+word2, 0)
             else:
                 calculatedResult.setdefault(stock + "," + stock2,0)
-                calculatedResult[stock+","+stock2] += store.get(stock+","+stock2, 0)
+                calculatedResult[stock+","+stock2] += store.get(word+","+word2, 0)
     print(calculatedResult)
         
 
