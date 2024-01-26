@@ -1,11 +1,20 @@
 
 
 # stock_tickers = ["ibm","apple","microsoft"]
-stock_tickers = ["ibm_0.125","apple_0.234","microsoft_0.325"]
-
+stock_tickers_test = ["ibm_0.125","apple_0.234","microsoft_0.325"]
+from Changing_DWave_Output import createVariableList
+import Finding_effective_weights as few
 #Penalty coefficient
 q = 0.8
-
+stock_tickers = ['AAPL', 'GOOGL', 'MSFT', 'AMZN', 'TSLA', 'FB', 'NFLX', 'NVDA', 'V', 'PYPL',
+                 'INTC', 'CSCO', 'GS', 'JPM', 'IBM', 'GE', 'DIS', 'VZ', 'KO', 'PEP',
+                 'WMT', 'COST', 'AMGN', 'GILD', 'PFE', 'BA', 'CAT', 'CVX', 'XOM', 'GS',
+                 'HD', 'IBM', 'JNJ', 'MCD', 'MRK', 'NKE', 'P&G', 'TRV', 'UNH', 'UTX',
+                 'WBA', 'MMM', 'CVS', 'ABT', 'ABBV', 'MO', 'JPM', 'BAC', 'WFC', 'C',
+                 'MET', 'AXP', 'GS', 'USB', 'CME', 'GS', 'MS', 'JPM', 'GS', 'GS', 'AAPL',
+                 'GOOGL', 'MSFT', 'AMZN', 'TSLA', 'FB', 'NFLX', 'NVDA', 'V', 'PYPL',
+                 'INTC', 'CSCO', 'GS', 'JPM', 'IBM', 'GE', 'DIS', 'VZ', 'KO', 'PEP'] # 
+stock_tickers_lower = [ticker.lower() for ticker in stock_tickers]
 #Test data
 stocks = {"ibm,apple": 0.38,
           "ibm,microsoft": 0.26,
@@ -17,6 +26,7 @@ stocks = {"ibm,apple": 0.38,
           "apple,microsoft": 0.45,
           "apple,ibm": 0.38}
 
+official_stock_tickers = createVariableList(stock_tickers_lower,few.findWeights())
 
 
 #add up covariance for same two companies
@@ -52,6 +62,8 @@ def calculate(store,ticker):
             else:
                 calculatedResult.setdefault(stock + "," + stock2,0)
                 calculatedResult[stock+","+stock2] += store.get(word+","+word2, 0)
+    for key in calculatedResult:
+        calculatedResult[key] *= q
     print(calculatedResult)
         
 
@@ -70,6 +82,7 @@ def updateStore(stocks):
 # print("This is the final linear relationship after applying the penalty term and adding equivalent tickers")
 # print(linearRelationship)
 
-calculate(stocks,stock_tickers)
+calculate(stocks,official_stock_tickers)
+# print(official_stock_tickers)
 
 
