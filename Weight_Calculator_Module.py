@@ -44,13 +44,35 @@ def square_and_expand_expression(expression):
 
     return expanded_squared_expr
 
+    # Extracting terms with two variables and their coefficients
+def extract_variable_terms(expression):
+    terms_dict = expression.as_coefficients_dict()
+    variable_terms = {}
+
+    for term, coeff in terms_dict.items():
+        variables = [symbol.name for symbol in term.free_symbols]
+        
+        if len(variables) == 1:
+            variable_terms[(variables[0], variables[0])] = coeff
+        elif len(variables) == 2:
+            variable_terms[tuple(variables)] = coeff
+
+    return variable_terms
+
+
 def main():
     expression = create_squared_expression(terms_list)
     print("THis is the expression to be squared: "+str(expression))
     expanded_expression = square_and_expand_expression(expression)
     print("This is the final expanded expression after squaring: "+str(expanded_expression))
-    final_dict = create_relationship_dictionary(expanded_expression)
-    print("This is the final dict: "+str(final_dict))
+
+    two_variable_terms = extract_variable_terms(expanded_expression)
+
+    # Printing the results
+    for term, coeff in two_variable_terms.items():
+        print(f"Term: {term}, Coefficient: {coeff}")
+    print(two_variable_terms)
+
 main()
 
 
