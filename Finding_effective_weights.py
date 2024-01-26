@@ -23,8 +23,8 @@ def findWeights(): # fuction that will find the weights of the assets
     for i in range(granularityFactor): #iterating the same number of times as the granularity
         weight = (PK * (2**(i))) # finding the weight for that specific term
         weightList.append(weight) # Add the weight to the list
-        print("List "+(str(i+1)) + ":" + str(weightList))
-    print("The maximum potential weighting of this asset in our portfolio is "+ str((sum(weightList)))+ ". This should be as close to "+str(maxPortfolioWeight)+" as possible.") 
+    #     print("List "+(str(i+1)) + ":" + str(weightList))
+    # print("The maximum potential weighting of this asset in our portfolio is "+ str((sum(weightList)))+ ". This should be as close to "+str(maxPortfolioWeight)+" as possible.") 
     return weightList # return the final list
 
 def main():
