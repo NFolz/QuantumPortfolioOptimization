@@ -1,6 +1,6 @@
 from sympy import *
 
-terms = ['X_2', 'Y_3', 'Z_4']
+terms= ['X_1','Y_2','Z_3']
 
 def create_squared_expression(terms):
     # Define the variable
@@ -13,13 +13,13 @@ def create_squared_expression(terms):
     for term in terms:
         # Split the term into ticker and coefficient
         ticker, coefficient_str = term.split('_')
-
+        
         # Convert coefficient to a floating-point number
         coefficient = float(coefficient_str)
-
+        
         # Create the symbolic variable for the ticker
         ticker_symbol = symbols(term)
-
+        
         # Add the term to the expression
         expression += (coefficient * ticker_symbol)
 
@@ -28,38 +28,67 @@ def create_squared_expression(terms):
 
     # Subtract 1 from the final expression
     final_expression = expanded_expr - 1
+    print("The expression is: ")
+    print(final_expression)
 
-    # Remove squares for terms with a single variable
-    final_expression = final_expression.as_ordered_terms()
+    return final_expression
 
-    for i, term in enumerate(final_expression):
-        if isinstance(term, Pow) and term.exp == 2 and len(term.free_symbols) == 1:
-            final_expression[i] = term.base
 
-    return sum(final_expression)
+def square_and_expand_expression(expression):
+    # Take the square of the entire expression
+    squared_expression = expression**2
 
-def combine_like_terms(expression):
-    combined_expression = 0
+    # Expand the squared expression to handle parentheses and simplifications
+    expanded_squared_expr = expand(squared_expression)
+
+    # Initialize a list to store squared terms
+    squared_terms = []
+
+    # Iterate through the terms in the expanded squared expression
+    simplified_expr = 0
+    for term in expanded_squared_expr.as_ordered_terms():
+        # Check if the term's string representation contains '**2'
+        if '**2' in str(term):
+            # Convert the term to a string, replace '**2', and convert back to a symbolic expression
+            term_str = str(term).replace('**2', '')
+            term = sympify(term_str)
+            squared_terms.append(term)
+        else:
+            simplified_expr += term
+
+    print("The modified expanded squared expression is: ")
+    print(simplified_expr)
+
+    print("Squared terms with '**2' removed: ")
+    print(squared_terms)
+
+    # Add the modified squared terms back to the simplified expression
+    simplified_expr += sum(squared_terms)
+
+    print("The final simplified expression is: ")
+    print(simplified_expr)
+
+    return simplified_expr
+
+    # Extracting terms with two variables and their coefficients
+def extract_variable_terms(expression):
     terms_dict = expression.as_coefficients_dict()
+    variable_terms = {}
 
     for term, coeff in terms_dict.items():
-        if isinstance(term, Pow) and term.exp == 2 and len(term.free_symbols) == 1:
-            base = term.as_coeff_mul()[1][0]
-            coefficient = term.as_coefficients_dict()[base]
-            combined_expression += coefficient * base
-        else:
-            combined_expression += term * coeff
-
-    return combined_expression
-
+        variables = [symbol.name for symbol in term.free_symbols]
+        
+        if len(variables) == 1:
+            variable_terms[(variables[0], variables[0])] = coeff
+        elif len(variables) == 2:
+            variable_terms[tuple(variables)] = coeff
+    print("The final terms are: ")
+    print(variable_terms)
+    return variable_terms
 
 def main():
-    squaredExpression = create_squared_expression(terms)
-    print(squaredExpression)
-    
-    combinedExpression = combine_like_terms(squaredExpression)
-    print(combinedExpression)
+    final_dict = extract_variable_terms(square_and_expand_expression(create_squared_expression(terms)))
+    print("The final dict is: ")
+    print(final_dict)
 
 main()
-
-
