@@ -7,14 +7,7 @@ import Finding_effective_weights as few
 quantumResults = [] # Resulting bit string from the quantum output
 finalPortfolio = [] # Final data set of stocks and portfolio weights to be sent to backend
 weightings = [] # Different weightings for each variable
-stock_tickers = ['AAPL', 'GOOGL', 'MSFT', 'AMZN', 'TSLA', 'FB', 'NFLX', 'NVDA', 'V', 'PYPL',
-                 'INTC', 'CSCO', 'GS', 'JPM', 'IBM', 'GE', 'DIS', 'VZ', 'KO', 'PEP',
-                 'WMT', 'COST', 'AMGN', 'GILD', 'PFE', 'BA', 'CAT', 'CVX', 'XOM', 'GS',
-                 'HD', 'IBM', 'JNJ', 'MCD', 'MRK', 'NKE', 'P&G', 'TRV', 'UNH', 'UTX',
-                 'WBA', 'MMM', 'CVS', 'ABT', 'ABBV', 'MO', 'JPM', 'BAC', 'WFC', 'C',
-                 'MET', 'AXP', 'GS', 'USB', 'CME', 'GS', 'MS', 'JPM', 'GS', 'GS', 'AAPL',
-                 'GOOGL', 'MSFT', 'AMZN', 'TSLA', 'FB', 'NFLX', 'NVDA', 'V', 'PYPL',
-                 'INTC', 'CSCO', 'GS', 'JPM', 'IBM', 'GE', 'DIS', 'VZ', 'KO', 'PEP'] # All of the tickers we are using (imported from backend, in order of variables)
+stock_tickers = ['AAPL', 'GOOGL', 'MSFT', 'AMZN'] # All of the tickers we are using (imported from backend, in order of variables)
 
 def createVariableList(tick,weights): # creating the variables that return as bits  
     variables = []

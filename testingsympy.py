@@ -1,6 +1,9 @@
 from sympy import *
+import Weight_Calculator_Module as WCM 
+import findingEffectiveWeights as few
+import Changing_DWave_Output as cdo 
 
-terms= ['X_1','Y_2','Z_3']
+terms= cdo.createVariableList(cdo.stock_tickers,few.findWeights())
 
 def create_squared_expression(terms):
     # Define the variable
@@ -82,8 +85,6 @@ def extract_variable_terms(expression):
             variable_terms[(variables[0], variables[0])] = coeff
         elif len(variables) == 2:
             variable_terms[tuple(variables)] = coeff
-    print("The final terms are: ")
-    print(variable_terms)
     return variable_terms
 
 def main():
