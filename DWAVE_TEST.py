@@ -1,10 +1,28 @@
+from dwave.system import *
+from dimod import *
+from itertools import islice
+classical_Sampler = ExactSolver()
+quantum_Sampler = EmbeddingComposite(DWaveSampler())
+import Finding_effective_weights as few
+import time 
+
 # Module that will be used to calculate the weights
 # Taking all variables (Ticker, weight), adding them all together, subtracting 1 from it, and squaring the entire term, then finding the relationship between each as the output
 # Final output should respect the final dict format: {('IBM_0.125','MSFT_0.00625'):3,...}
 
 from sympy import *
 
-terms_list = ['IBM_0.4','IBM_0.2','MSFT_0.4','MSFT_0.2','AAPL_0.4','AAPL_0.2']
+
+
+def createVariableList(tick,weights): # creating the variables that return as bits  
+    variables = []
+    for ticker in tick:
+        for weight in weights:
+            variables+=[str(ticker)+"_"+str(weight)]
+    return variables
+
+tickers = ['AAPL','MSFT','IBM','META']
+terms_list = createVariableList(tickers,few.findWeights())
 
 def create_squared_expression(terms):
     # Define the variable
@@ -59,8 +77,25 @@ def extract_variable_terms(expression):
 
     return variable_terms
 
+def calculate_final_weight(datum):
+    final_weight = 0.0
+
+    # Assuming datum is a Sample object and has a 'sample' attribute
+    data_dict = datum.sample
+
+    for key, value in data_dict.items():
+        if value == 1:
+            # Extract the float value after the underscore
+            _, float_value_str = key.split('_')
+            float_value = float(float_value_str)
+
+            # Add the float value to the final weight
+            final_weight += float_value
+
+    return final_weight
 
 def main():
+    print(terms_list)
     expression = create_squared_expression(terms_list)
     print("THis is the expression to be squared: "+str(expression))
     expanded_expression = square_and_expand_expression(expression)
@@ -73,7 +108,35 @@ def main():
         print(f"Term: {term}, Coefficient: {coeff}")
     print(two_variable_terms)
 
+    Q = two_variable_terms
+
+    classical_start_time = time.time()
+
+    sampleset = classical_Sampler.sample_qubo(Q, num_reads=5000)
+
+    classical_end_time = time.time()
+
+    classical_time_difference = classical_end_time-classical_start_time
+
+    print("The classical solving time was: "+str(classical_time_difference)+" seconds")
+
+    quantum_start_time = time.time()
+
+    sampleset = quantum_Sampler.sample_qubo(Q, num_reads=5000)
+
+    quantum_end_time = time.time()
+
+    quantum_time_difference = quantum_end_time-quantum_start_time
+
+    print("The quantum solving time was: "+str(quantum_time_difference)+" seconds")
+
+    print(sampleset)
+    
+    for datum in islice(sampleset.data(fields=['sample', 'energy']), 5):
+        print("Result: ")
+        print(datum)
+        print("The final weighting of this portfolio would be: ")
+        print(calculate_final_weight(datum))
+
 main()
-
-
 
