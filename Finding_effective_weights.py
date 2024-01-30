@@ -4,10 +4,10 @@ import pandas as pd
 import numpy as np
 
 # Variables
-maxPortfolioWeight = 0.2 # maximum % of portfolio that one single asset can occupy 
-minPortfolioWeight = 0 # minimum % of portfolio that one single asset can occupy
-granularityFactor = 10 # granularity of the weightings, higher the more computationally intensive
-q = 100 # The weighting factor to make this computationally relevant
+# maxPortfolioWeight = 0.2 # maximum % of portfolio that one single asset can occupy 
+# minPortfolioWeight = 0 # minimum % of portfolio that one single asset can occupy
+# granularityFactor = 15 # granularity of the weightings, higher the more computationally intensive
+# q = 100 # The weighting factor to make this computationally relevant
 
 def findPK(granFactor, maxPWeight, minPWeight): # Function to be called inside the findWeights one to adjust the PK
     basePK = (1/(2**granFactor))
@@ -18,7 +18,7 @@ def findPK(granFactor, maxPWeight, minPWeight): # Function to be called inside t
 
     return effectivePK
 
-def findWeights(): # fuction that will find the weights of the assets
+def findWeights(granularityFactor,maxPortfolioWeight,minPortfolioWeight): # fuction that will find the weights of the assets
     PK = findPK(granularityFactor,maxPortfolioWeight,minPortfolioWeight) # Calling function above using variables defined at the top
     weightList = []
     for i in range(granularityFactor): #iterating the same number of times as the granularity

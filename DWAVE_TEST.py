@@ -6,6 +6,8 @@ import time
 from sympy import *
 import numpy as np
 import random as random
+import dwave.inspector
+
 
 # Initialize classical and quantum samplers
 classical_Sampler = ExactSolver()
@@ -24,8 +26,7 @@ def createVariableList(tick, weights):
     return variables
 
 # Define a list of tickers
-tickers = ['AAPL', 'GOOGL', 'MSFT', 'AMZN', 'TSLA', 'FB', 'NFLX', 'NVDA', 'V', 'PYPL',
-                 'INTC', 'CSCO', 'GS', 'JPM', 'IBM', 'GE', 'DIS', 'VZ', 'KO', 'PEP',]
+tickers = ['AAPL', 'GOOGL', 'MSFT', 'AMZN', 'TSLA', 'FB']
 
 # Create a list of terms combining tickers and weights
 terms_list = createVariableList(tickers, few.findWeights())
@@ -164,7 +165,7 @@ def main():
     classical_start_time = time.time()
 
     try:
-        sampleset = classical_Sampler.sample_qubo(Q, num_reads=1000)
+        sampleset = classical_Sampler.sample_qubo(Q, num_reads=1000,chain_strength = 30)
     except Exception as e:
         print(f"An error occurred: {e}")
         sampleset = None  # Set sampleset to None to avoid issues later
@@ -176,8 +177,11 @@ def main():
     if sampleset:
         print("The classical solving time was: " + str(classical_time_difference) + " seconds")
 
+    max_chain_bias = max(Q.values())
+    print(str(max_chain_bias))
+
     quantum_start_time = time.time()
-    sampleset = quantum_Sampler.sample_qubo(Q, num_reads=1000)
+    sampleset = quantum_Sampler.sample_qubo(Q, num_reads=1000, chain_strength = 150)
     quantum_end_time = time.time()
     quantum_time_difference = quantum_end_time - quantum_start_time
     print("The quantum solving time was: " + str(quantum_time_difference) + " seconds")
@@ -187,4 +191,6 @@ def main():
         print(datum)
         print("The final weighting of this portfolio would be: ")
         print(calculate_final_weight(datum))
+
+    dwave.inspector.show(sampleset)
 main()
