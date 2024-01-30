@@ -48,9 +48,11 @@ official_stock_tickers = createVariableList(stock_tickers_lower,few.findWeights(
 # for key, value in linear.items():
 #     if key[0] == key[1]:
 
-
+#take a store which contains the covariance values with penalty term applied
 def calculate(store,ticker):
     calculatedResult={}
+
+    #iterate through dictionary to get the key value in ticker
     for stock in ticker:
         word = stock.split("_")[0]
         for stock2 in ticker:
@@ -67,12 +69,13 @@ def calculate(store,ticker):
     print(calculatedResult)
         
 
-# apply penalty coefficient to all values stock vovariance values
+# apply penalty coefficient to all values stock covariance values
 def updateStore(stocks):
     store = {}
     result=0
     for stock, covar in stocks.items():   
         result = q*covar   
+        store.setdefault(stock,result)
         store.setdefault(stock,result)
     return store
         

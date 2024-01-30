@@ -1,7 +1,7 @@
-# returns = {"ibm": 0.76,
-#           "microsoft": 0.26,
-#           "apple": 0.7,
-#           }
+returns = {"ibm": 0.76,
+          "microsoft": 0.26,
+          "apple": 0.7,
+          }
 
 q = 0.8
 
@@ -16,22 +16,22 @@ def updateReturns(returns):
 
 
 #Add Updated returns to final Linear( both tickers are the same) Dictionary
-def updateFinalLinearDic(a,b):
-    result = {}
+def updateFinalLinearDic(finalDictionary,returnsDic):
+    
     #Go through List of all Variables
-    for stock in a:
+    for stock in finalDictionary:
         #Split the variable names by format expected to check if they are the same relationship
-        word = stock.split("_")[0]
-        word2 =stock.split("_")[2]
+        word = stock.split(",")[0]
+        word2 =stock.split(",")[1]
         #if they are, create new element in result. Add the value from master dictionary and the value from updated stock returns dictionary
         if word==word2:
-            result.setdefault(stock,0)
-            result[stock] += a[stock]+b[word]
+
+            finalDictionary[stock] = finalDictionary.get(stock, 0)
+            finalDictionary += returnsDic.get(stock.split("_")[0])
+
+            # finalDictionary[stock] += finalDictionary[stock]+b[word]
     
     #Return the updated linear dictionary
-    return result
+   
 
 
-
-# x =updateReturns({"ibm":2,"apple":3})
-# print(x)

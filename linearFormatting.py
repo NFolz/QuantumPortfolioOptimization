@@ -16,13 +16,15 @@ returns = {"ibm": 0.76,
           "apple": 0.7,
           }
 
-
+#Apply Penalty Term
 store = updateStore(stocks)
-print(store)
+
+#add covariance for same two companies
 calculated = calculate(store)
-print(calculated)
+
+#Apply penalty term to returns data
 adjustedReturns = updateReturns(returns)
-print(adjustedReturns)
+
 
 testInput = {"IBM,0,IBM,2":2,}
 
@@ -36,4 +38,3 @@ def removingDoublesFromReturns(q,*something,returns):
             print(search)
             adjustedReturns[stock]-=calculated[search]*q
 
-print (adjustedReturns)
