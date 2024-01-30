@@ -1,30 +1,36 @@
 from dwave.system import *
 from dimod import *
 from itertools import islice
-classical_Sampler = ExactSolver()
-quantum_Sampler = EmbeddingComposite(DWaveSampler())
 import Finding_effective_weights as few
 import time 
+from sympy import *
+import numpy as np
+import random as random
+
+# Initialize classical and quantum samplers
+classical_Sampler = ExactSolver()
+quantum_Sampler = EmbeddingComposite(DWaveSampler())
 
 # Module that will be used to calculate the weights
 # Taking all variables (Ticker, weight), adding them all together, subtracting 1 from it, and squaring the entire term, then finding the relationship between each as the output
 # Final output should respect the final dict format: {('IBM_0.125','MSFT_0.00625'):3,...}
 
-from sympy import *
-
-
-
-def createVariableList(tick,weights): # creating the variables that return as bits  
+def createVariableList(tick, weights):
+    """Create a list of variables combining tickers and weights."""
     variables = []
     for ticker in tick:
         for weight in weights:
-            variables+=[str(ticker)+"_"+str(weight)]
+            variables += [str(ticker) + "_" + str(weight)]
     return variables
 
-tickers = ['AAPL','MSFT','IBM','META']
-terms_list = createVariableList(tickers,few.findWeights())
+# Define a list of tickers
+tickers = ['AAPL', 'MSFT', 'IBM', 'META','JPM','RBC']
+
+# Create a list of terms combining tickers and weights
+terms_list = createVariableList(tickers, few.findWeights())
 
 def create_squared_expression(terms):
+    """Create a squared expression based on the input terms."""
     # Define the variable
     x = symbols('x')
 
@@ -54,6 +60,7 @@ def create_squared_expression(terms):
     return final_expression
 
 def square_and_expand_expression(expression):
+    """Square and expand the given expression."""
     # Take the square of the entire expression
     squared_expression = expression**2
 
@@ -62,8 +69,8 @@ def square_and_expand_expression(expression):
 
     return expanded_squared_expr
 
-    # Extracting terms with two variables and their coefficients
 def extract_variable_terms(expression):
+    """Extract terms with two variables and their coefficients."""
     terms_dict = expression.as_coefficients_dict()
     variable_terms = {}
 
@@ -78,6 +85,7 @@ def extract_variable_terms(expression):
     return variable_terms
 
 def calculate_final_weight(datum):
+    """Calculate the final weight based on the sample datum."""
     final_weight = 0.0
 
     # Assuming datum is a Sample object and has a 'sample' attribute
@@ -94,43 +102,84 @@ def calculate_final_weight(datum):
 
     return final_weight
 
+def subtract_0_1_for_matching_tuples(input_dict):
+    result_dict = {}
+    
+    for key, value in input_dict.items():
+        stock_symbol_1, stock_symbol_2 = key
+        if stock_symbol_1 == stock_symbol_2:
+            result_dict[key] = value - 0.1
+        else:
+            result_dict[key] = value
+    
+    return result_dict
+
+def subtract_0_1_and_10000_for_msft(input_dict):
+    result_dict = {}
+    
+    for key, value in input_dict.items():
+        stock_symbol_1, stock_symbol_2 = key
+        if stock_symbol_1 == stock_symbol_2:
+            if 'MSFT' in stock_symbol_1 and 'MSFT' in stock_symbol_2:
+                result_dict[key] = value - 10000
+            else:
+                result_dict[key] = value - 0.1
+        else:
+            result_dict[key] = value
+    
+    return result_dict
+
+def multiply_dict_values(input_dict, factor):
+    multiplied_dict = {key: value * factor for key, value in input_dict.items()}
+    return multiplied_dict
+
 def main():
     print(terms_list)
     expression = create_squared_expression(terms_list)
-    print("THis is the expression to be squared: "+str(expression))
+    print("This is the expression to be squared: " + str(expression))
     expanded_expression = square_and_expand_expression(expression)
-    print("This is the final expanded expression after squaring: "+str(expanded_expression))
+    print("This is the final expanded expression after squaring: " + str(expanded_expression))
 
-    two_variable_terms = extract_variable_terms(expanded_expression)
+    two_variable_terms = multiply_dict_values(extract_variable_terms(expanded_expression),1500)
 
-    # Printing the results
-    for term, coeff in two_variable_terms.items():
-        print(f"Term: {term}, Coefficient: {coeff}")
+    # Printing the results of the strictly weighted dictionary
+    # for term, coeff in two_variable_terms.items():
+    #     print(f"Term: {term}, Coefficient: {coeff}")
+    print("The weightings dictionary: ")
     print(two_variable_terms)
 
-    Q = two_variable_terms
+    final_dict = subtract_0_1_and_10000_for_msft(subtract_0_1_for_matching_tuples(two_variable_terms))
+
+
+
+    # Printing the results of the weight + arbitrary negative values dictionary
+    # for term, coeff in final_dict.items():
+    #     print(f"Term: {term}, Coefficient: {coeff}")
+    print("The complex dictionary: ")
+    print(final_dict)
+
+    Q = final_dict
 
     classical_start_time = time.time()
 
-    sampleset = classical_Sampler.sample_qubo(Q, num_reads=5000)
+    try:
+        sampleset = classical_Sampler.sample_qubo(Q, num_reads=5000)
+    except np.core._exceptions._ArrayMemoryError:
+        print("Classical solver failed due to memory error.")
+        sampleset = None  # Set sampleset to None to avoid issues later
 
     classical_end_time = time.time()
 
-    classical_time_difference = classical_end_time-classical_start_time
+    classical_time_difference = classical_end_time - classical_start_time
 
-    print("The classical solving time was: "+str(classical_time_difference)+" seconds")
+    if sampleset:
+        print("The classical solving time was: " + str(classical_time_difference) + " seconds")
 
     quantum_start_time = time.time()
-
-    sampleset = quantum_Sampler.sample_qubo(Q, num_reads=5000)
-
+    sampleset = quantum_Sampler.sample_qubo(Q, num_reads=1000)
     quantum_end_time = time.time()
-
-    quantum_time_difference = quantum_end_time-quantum_start_time
-
-    print("The quantum solving time was: "+str(quantum_time_difference)+" seconds")
-
-    print(sampleset)
+    quantum_time_difference = quantum_end_time - quantum_start_time
+    print("The quantum solving time was: " + str(quantum_time_difference) + " seconds")
     
     for datum in islice(sampleset.data(fields=['sample', 'energy']), 5):
         print("Result: ")
@@ -139,4 +188,3 @@ def main():
         print(calculate_final_weight(datum))
 
 main()
-
