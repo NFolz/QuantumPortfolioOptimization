@@ -24,7 +24,8 @@ def createVariableList(tick, weights):
     return variables
 
 # Define a list of tickers
-tickers = ['AAPL', 'MSFT', 'IBM', 'META','JPM','RBC']
+tickers = ['AAPL', 'GOOGL', 'MSFT', 'AMZN', 'TSLA', 'FB', 'NFLX', 'NVDA', 'V', 'PYPL',
+                 'INTC', 'CSCO', 'GS', 'JPM', 'IBM', 'GE', 'DIS', 'VZ', 'KO', 'PEP',]
 
 # Create a list of terms combining tickers and weights
 terms_list = createVariableList(tickers, few.findWeights())
@@ -121,7 +122,7 @@ def subtract_0_1_and_10000_for_msft(input_dict):
         stock_symbol_1, stock_symbol_2 = key
         if stock_symbol_1 == stock_symbol_2:
             if 'MSFT' in stock_symbol_1 and 'MSFT' in stock_symbol_2:
-                result_dict[key] = value - 10000
+                result_dict[key] = value - 10
             else:
                 result_dict[key] = value - 0.1
         else:
@@ -164,8 +165,8 @@ def main():
 
     try:
         sampleset = classical_Sampler.sample_qubo(Q, num_reads=1000)
-    except np.core._exceptions._ArrayMemoryError:
-        print("Classical solver failed due to memory error.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
         sampleset = None  # Set sampleset to None to avoid issues later
 
     classical_end_time = time.time()
@@ -186,5 +187,4 @@ def main():
         print(datum)
         print("The final weighting of this portfolio would be: ")
         print(calculate_final_weight(datum))
-
 main()

@@ -12,7 +12,7 @@ stocks = {"ibm,apple": 0.76,
           "apple,ibm": 0.38}
 
 returns = {"ibm": 0.76,
-          "microsoft": 0.26,
+          "MSFT": 0.26,
           "apple": 0.7,
           }
 
