@@ -2,7 +2,7 @@
 
 # stock_tickers = ["ibm","apple","microsoft"]
 stock_tickers_test = ["ibm_0.125","apple_0.234","microsoft_0.325"]
-from Changing_DWave_Output import createVariableList
+from Changing_DWave_Output_Jake import createVariableList
 import Finding_effective_weights as few
 #Penalty coefficient
 q = 0.8
