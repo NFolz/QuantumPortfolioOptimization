@@ -140,7 +140,7 @@ def main():
     expanded_expression = square_and_expand_expression(expression)
     print("This is the final expanded expression after squaring: " + str(expanded_expression))
 
-    two_variable_terms = multiply_dict_values(extract_variable_terms(expanded_expression),1500)
+    two_variable_terms = multiply_dict_values(extract_variable_terms(expanded_expression),3000)
 
     # Printing the results of the strictly weighted dictionary
     # for term, coeff in two_variable_terms.items():
@@ -163,7 +163,7 @@ def main():
     classical_start_time = time.time()
 
     try:
-        sampleset = classical_Sampler.sample_qubo(Q, num_reads=5000)
+        sampleset = classical_Sampler.sample_qubo(Q, num_reads=1000)
     except np.core._exceptions._ArrayMemoryError:
         print("Classical solver failed due to memory error.")
         sampleset = None  # Set sampleset to None to avoid issues later
