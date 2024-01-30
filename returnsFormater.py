@@ -27,7 +27,8 @@ def updateFinalLinearDic(finalDictionary,returnsDic):
         if word==word2:
 
             finalDictionary[stock] = finalDictionary.get(stock, 0)
-            finalDictionary += returnsDic.get(stock.split("_")[0])
+            print(" i just added this"+finalDictionary[stock])
+            finalDictionary[stock] -= returnsDic.get(stock.split("_")[0])
 
             # finalDictionary[stock] += finalDictionary[stock]+b[word]
     

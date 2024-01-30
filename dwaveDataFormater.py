@@ -15,6 +15,36 @@ stock_tickers = ['AAPL', 'GOOGL', 'MSFT', 'AMZN', 'TSLA', 'FB', 'NFLX', 'NVDA', 
                  'GOOGL', 'MSFT', 'AMZN', 'TSLA', 'FB', 'NFLX', 'NVDA', 'V', 'PYPL',
                  'INTC', 'CSCO', 'GS', 'JPM', 'IBM', 'GE', 'DIS', 'VZ', 'KO', 'PEP'] # 
 stock_tickers_lower = [ticker.lower() for ticker in stock_tickers]
+stock_values = {
+    'AAPL': 0.0, 'GOOGL': 0.011, 'MSFT': 0.022,
+    'AMZN': 0.032, 'TSLA': 0.043, 'FB': 0.054,
+    'NFLX': 0.065, 'NVDA': 0.075, 'V': 0.086,
+    'PYPL': 0.097, 'INTC': 0.108, 'CSCO': 0.118,
+    'GS': 0.129, 'JPM': 0.14, 'IBM': 0.151,
+    'GE': 0.161, 'DIS': 0.172, 'VZ': 0.183,
+    'KO': 0.194, 'PEP': 0.204, 'WMT': 0.215,
+    'COST': 0.226, 'AMGN': 0.237, 'GILD': 0.247,
+    'PFE': 0.258, 'BA': 0.269, 'CAT': 0.28,
+    'CVX': 0.29, 'XOM': 0.301, 'GS': 0.312,
+    'HD': 0.312, 'IBM': 0.323, 'JNJ': 0.334,
+    'MCD': 0.344, 'MRK': 0.355, 'NKE': 0.366,
+    'P&G': 0.377, 'TRV': 0.387, 'UNH': 0.398,
+    'UTX': 0.409, 'WBA': 0.419, 'MMM': 0.43,
+    'CVS': 0.441, 'ABT': 0.452, 'ABBV': 0.462,
+    'MO': 0.473, 'JPM': 0.484, 'BAC': 0.495,
+    'WFC': 0.505, 'C': 0.516, 'MET': 0.527,
+    'AXP': 0.537, 'GS': 0.548, 'USB': 0.559,
+    'CME': 0.57, 'GS': 0.58, 'MS': 0.591,
+    'JPM': 0.602, 'GS': 0.613, 'GS': 0.613,
+    'AAPL': 0.624, 'GOOGL': 0.635, 'MSFT': 0.646,
+    'AMZN': 0.656, 'TSLA': 0.667, 'FB': 0.678,
+    'NFLX': 0.689, 'NVDA': 0.699, 'V': 0.71,
+    'PYPL': 0.721, 'INTC': 0.732, 'CSCO': 0.742,
+    'GS': 0.753, 'JPM': 0.764, 'IBM': 0.775,
+    'GE': 0.785, 'DIS': 0.796, 'VZ': 0.807,
+    'KO': 0.818, 'PEP': 0.828
+}
+
 #Test data
 stocks = {"ibm,apple": 0.38,
           "ibm,microsoft": 0.26,
