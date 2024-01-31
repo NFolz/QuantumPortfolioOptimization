@@ -12,6 +12,7 @@ def updateESG(updateESG,q):
     for stock, returned in updateESG.items():   
         result = q*returned  
         updateESG[stock]=result
+    return updateESG
     
 
 
@@ -25,7 +26,6 @@ def updateFinalLinearDic(finalDictionary,returnsDic):
         
         #if they are, create new element in result. Add the value from master dictionary and the value from updated stock returns dictionary
         if stock_symbol_1 == stock_symbol_2:
-
             finalDictionary[key] = finalDictionary.get(key, 0)
             finalDictionary[key] -= returnsDic.get(stock_symbol_1.split("_")[0])
             print(str(finalDictionary[key]))
