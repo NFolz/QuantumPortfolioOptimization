@@ -20,25 +20,144 @@ import CovarianceFunctions as cv  # module used to add the co-variances to the f
 # All necessary inputs are here
 max_portfolio_weight = 0.2 # max weight that any single asset can compose of the portfolio
 min_portfolio_weight = 0  # min weight that any single asset can compose of the portfolio
-granularity_factor = 6 # the degree of granularity that the weightings will incurr
-stock_list = ['AAPL','IBM','GOOGL','MSFT'] # list of all the stocks we will be computing on
-covariance_dict = {("AAPL", "AAPL"): 1,
+granularity_factor = 5 # the degree of granularity that the weightings will incurr
+stock_ticker_list = ['AAPL', 'IBM', 'GOOGL', 'MSFT', 'AMZN', 'TSLA', 'NVDA', 'NFLX', 'V', 'GS']
+covariance_dict = {
+    ("AAPL", "AAPL"): 1,
     ("AAPL", "GOOGL"): 0.45,
     ("AAPL", "MSFT"): 0.38,
-    ("AAPL", "IBM"): 0.38,  # Include only the relevant entry for IBM
+    ("AAPL", "IBM"): 0.38,
+    ("AAPL", "AMZN"): 0.32,
+    ("AAPL", "TSLA"): 0.28,
+    ("AAPL", "NVDA"): 0.21,
+    ("AAPL", "NFLX"): 0.25,
+    ("AAPL", "V"): 0.35,
+    ("AAPL", "GS"): 0.3,
 
     ("GOOGL", "AAPL"): 0.45,
     ("GOOGL", "GOOGL"): 1,
     ("GOOGL", "MSFT"): 0.26,
-    ("GOOGL", "IBM"): 0.26,  # Include only the relevant entry for IBM
+    ("GOOGL", "IBM"): 0.26,
+    ("GOOGL", "AMZN"): 0.3,
+    ("GOOGL", "TSLA"): 0.18,
+    ("GOOGL", "NVDA"): 0.15,
+    ("GOOGL", "NFLX"): 0.2,
+    ("GOOGL", "V"): 0.32,
+    ("GOOGL", "GS"): 0.28,
 
-    # ... Repeat the structure for other stocks
+    ("MSFT", "AAPL"): 0.38,
+    ("MSFT", "GOOGL"): 0.26,
+    ("MSFT", "MSFT"): 1,
+    ("MSFT", "IBM"): 0.26,
+    ("MSFT", "AMZN"): 0.29,
+    ("MSFT", "TSLA"): 0.15,
+    ("MSFT", "NVDA"): 0.18,
+    ("MSFT", "NFLX"): 0.23,
+    ("MSFT", "V"): 0.3,
+    ("MSFT", "GS"): 0.25,
+
     ("IBM", "AAPL"): 0.38,
     ("IBM", "GOOGL"): 0.26,
     ("IBM", "MSFT"): 0.26,
-    ("IBM", "IBM"): 1 } # Include the self-covariance for IBM} # dict with all the covariances between stocks
-returns_dict = {'IBM':0.12,'AAPL':0.1,'GOOGL':0.15,'MSFT':0.2} # dict with the expected returns for each stock
-esg_dict = {'IBM':0.12,'AAPL':0.1,'GOOGL':0.15,'MSFT':0.2} # dict with the ESG scores for each stock
+    ("IBM", "IBM"): 1,
+    ("IBM", "AMZN"): 0.24,
+    ("IBM", "TSLA"): 0.12,
+    ("IBM", "NVDA"): 0.15,
+    ("IBM", "NFLX"): 0.2,
+    ("IBM", "V"): 0.28,
+    ("IBM", "GS"): 0.23,
+
+    ("AMZN", "AAPL"): 0.32,
+    ("AMZN", "GOOGL"): 0.3,
+    ("AMZN", "MSFT"): 0.29,
+    ("AMZN", "IBM"): 0.24,
+    ("AMZN", "AMZN"): 1,
+    ("AMZN", "TSLA"): 0.4,
+    ("AMZN", "NVDA"): 0.35,
+    ("AMZN", "NFLX"): 0.45,
+    ("AMZN", "V"): 0.38,
+    ("AMZN", "GS"): 0.42,
+
+    ("TSLA", "AAPL"): 0.28,
+    ("TSLA", "GOOGL"): 0.18,
+    ("TSLA", "MSFT"): 0.15,
+    ("TSLA", "IBM"): 0.12,
+    ("TSLA", "AMZN"): 0.4,
+    ("TSLA", "TSLA"): 1,
+    ("TSLA", "NVDA"): 0.5,
+    ("TSLA", "NFLX"): 0.3,
+    ("TSLA", "V"): 0.45,
+    ("TSLA", "GS"): 0.38,
+
+    ("NVDA", "AAPL"): 0.21,
+    ("NVDA", "GOOGL"): 0.15,
+    ("NVDA", "MSFT"): 0.18,
+    ("NVDA", "IBM"): 0.15,
+    ("NVDA", "AMZN"): 0.35,
+    ("NVDA", "TSLA"): 0.5,
+    ("NVDA", "NVDA"): 1,
+    ("NVDA", "NFLX"): 0.4,
+    ("NVDA", "V"): 0.48,
+    ("NVDA", "GS"): 0.32,
+
+    ("NFLX", "AAPL"): 0.25,
+    ("NFLX", "GOOGL"): 0.2,
+    ("NFLX", "MSFT"): 0.23,
+    ("NFLX", "IBM"): 0.2,
+    ("NFLX", "AMZN"): 0.45,
+    ("NFLX", "TSLA"): 0.3,
+    ("NFLX", "NVDA"): 0.4,
+    ("NFLX", "NFLX"): 1,
+    ("NFLX", "V"): 0.38,
+    ("NFLX", "GS"): 0.42,
+
+    ("V", "AAPL"): 0.35,
+    ("V", "GOOGL"): 0.32,
+    ("V", "MSFT"): 0.3,
+    ("V", "IBM"): 0.28,
+    ("V", "AMZN"): 0.38,
+    ("V", "TSLA"): 0.45,
+    ("V", "NVDA"): 0.48,
+    ("V", "NFLX"): 0.38,
+    ("V", "V"): 1,
+    ("V", "GS"): 0.36,
+
+    ("GS", "AAPL"): 0.3,
+    ("GS", "GOOGL"): 0.28,
+    ("GS", "MSFT"): 0.25,
+    ("GS", "IBM"): 0.23,
+    ("GS", "AMZN"): 0.42,
+    ("GS", "TSLA"): 0.38,
+    ("GS", "NVDA"): 0.32,
+    ("GS", "NFLX"): 0.42,
+    ("GS", "V"): 0.36,
+    ("GS", "GS"): 1,
+}
+
+returns_dict = {
+    'AAPL': 0.1,
+    'IBM': 0.12,
+    'GOOGL': 0.15,
+    'MSFT': 0.2,
+    'AMZN': 0.18,
+    'TSLA': 0.25,
+    'NVDA': 0.22,
+    'NFLX': 0.28,
+    'V': 0.32,
+    'GS': 0.3,
+}
+esg_dict = {
+    'AAPL': 0.1,
+    'IBM': 0.12,
+    'GOOGL': 0.15,
+    'MSFT': 0.2,
+    'AMZN': 0.18,
+    'TSLA': 0.25,
+    'NVDA': 0.22,
+    'NFLX': 0.28,
+    'V': 0.32,
+    'GS': 0.3,
+}
 returns_penalty_term = 20 # penalty term for the returns
 esg_penalty_term = 1 # penalty term for the esg scores
 covariance_penalty_term = 5 # penalty term for the covariance
@@ -47,7 +166,14 @@ quantum_Sampler = EmbeddingComposite(DWaveSampler()) # The quantum solver we are
 
 def main():
     #1: Creating the weighted dictionary with the weight constraints
-    weighted_dict = ce.multiply_dict_values(ce.extract_variable_terms(ce.square_and_expand_expression(ce.create_squared_expression(ce.createVariableList(stock_list,few.findWeights(granularity_factor,max_portfolio_weight,min_portfolio_weight))))),weightings_penalty_term)
+    variable_list = ce.createVariableList(stock_ticker_list,few.findWeights(granularity_factor,max_portfolio_weight,min_portfolio_weight))
+    print("This is the variable list: ")
+    print(variable_list)
+    expression = ce.create_squared_expression(variable_list)
+    print("This is the expression: ")
+    print(expression)
+    expanded_expression = ce.square_and_expand_expression(expression)
+    weighted_dict = ce.multiply_dict_values(ce.extract_variable_terms(expanded_expression),weightings_penalty_term)
     print("This is the weighted dictionary, which includes all variables: ")
     print(weighted_dict)
     final_dict = weighted_dict
