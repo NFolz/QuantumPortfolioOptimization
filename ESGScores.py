@@ -16,18 +16,18 @@ def updateESG(updateESG,q):
 
 
 #Add Updated returns to final Linear( both tickers are the same) Dictionary
-def updateFinalLinearDic(a,b):
-    result = {}
+def updateFinalLinearDic(finalDictionary,returnsDic):
+    print("hi")
     #Go through List of all Variables
-    for stock in a:
+    for key, value in finalDictionary.items():
+        stock_symbol_1, stock_symbol_2 = key
         #Split the variable names by format expected to check if they are the same relationship
-        word = stock.split("_")[0]
-        word2 =stock.split("_")[2]
+        
         #if they are, create new element in result. Add the value from master dictionary and the value from updated stock returns dictionary
-        if word==word2:
-            result.setdefault(stock,0)
-            result[stock] += a[stock]+b[word]
-    
-    #Return the updated linear dictionary
-    return result
+        if stock_symbol_1 == stock_symbol_2:
+
+            finalDictionary[key] = finalDictionary.get(key, 0)
+            print("I just subtracted this: " + str(returnsDic.get(stock_symbol_1.split("_")[0]))+str(key) + "from" +str(finalDictionary[key]))
+            finalDictionary[key] -= returnsDic.get(stock_symbol_1.split("_")[0])
+            print(str(finalDictionary[key]))
 
