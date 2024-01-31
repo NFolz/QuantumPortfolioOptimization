@@ -30,7 +30,7 @@ def createVariableList(tick, weights):
 tickers = ['AAPL', 'GOOGL', 'MSFT', 'AMZN', 'TSLA', 'FB', 'NFLX', 'NVDA', 'V', 'PYPL']
 
 # Create a list of terms combining tickers and weights
-terms_list = createVariableList(tickers, few.findWeights(10,0.2,0))
+terms_list = createVariableList(tickers, few.findWeights(5,0.2,0))
 
 def create_squared_expression(terms):
     """Create a squared expression based on the input terms."""
@@ -181,7 +181,7 @@ def main():
     #     print("The classical solving time was: " + str(classical_time_difference) + " seconds")
 
     quantum_start_time = time.time()
-    sampleset = quantum_Sampler.sample_qubo(Q, num_reads=1000)
+    sampleset = quantum_Sampler.sample_qubo(Q, num_reads=1000, chain_strength = 150)
     quantum_end_time = time.time()
     quantum_time_difference = quantum_end_time - quantum_start_time
     print("The quantum solving time was: " + str(quantum_time_difference) + " seconds")
@@ -191,4 +191,6 @@ def main():
         print(datum)
         print("The final weighting of this portfolio would be: ")
         print(calculate_final_weight(datum))
+
+    dwave.inspector.show(sampleset)
 main()

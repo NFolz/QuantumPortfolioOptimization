@@ -2,7 +2,7 @@ from Changing_DWave_Output_Jake import createVariableList
 import Finding_effective_weights as few
 
 #Add Covariance Terms
-def addCovariance(finalDictionary,tickers):
+def addCovariance(finalDictionary,covarianceDictionary):
     #For loop to iterate through dictionary while seperating its key and value pairs
     for key, value in finalDictionary.items():
         #Creating two new variables that store the contents of the tuple that makes up the key
@@ -18,7 +18,7 @@ def addCovariance(finalDictionary,tickers):
         # print(comparisonValue)
 
         #Getting the covariance value related to the variables implemented
-        covariance_value = tickers.get(comparisonValue)
+        covariance_value = covarianceDictionary.get(comparisonValue)
         # print("The value added is" +str(covariance_value))
 
         #Ensures that covariance value is not none and then adds that value to the keys current pair value 
