@@ -18,17 +18,31 @@ import ESGScores as esgs # module used to add the ESG scores to the final dict
 import CovarianceFunctions as cv  # module used to add the co-variances to the final dict
 
 # All necessary inputs are here
-max_portfolio_weight = 0 # max weight that any single asset can compose of the portfolio
+max_portfolio_weight = 0.2 # max weight that any single asset can compose of the portfolio
 min_portfolio_weight = 0  # min weight that any single asset can compose of the portfolio
-granularity_factor = 0 # the degree of granularity that the weightings will incurr
-stock_list = [] # list of all the stocks we will be computing on
-covariance_dict = {} # dict with all the covariances between stocks
-returns_dict = {} # dict with the expected returns for each stock
-esg_dict = {} # dict with the ESG scores for each stock
-returns_penalty_term = 0 # penalty term for the returns
-esg_penalty_term = 0 # penalty term for the esg scores
-covariance_penalty_term = 0 # penalty term for the covariance
-weightings_penalty_term = 0 # penalty term for the weightings
+granularity_factor = 6 # the degree of granularity that the weightings will incurr
+stock_list = ['AAPL','IBM','GOOGL','MSFT'] # list of all the stocks we will be computing on
+covariance_dict = {("AAPL", "AAPL"): 1,
+    ("AAPL", "GOOGL"): 0.45,
+    ("AAPL", "MSFT"): 0.38,
+    ("AAPL", "IBM"): 0.38,  # Include only the relevant entry for IBM
+
+    ("GOOGL", "AAPL"): 0.45,
+    ("GOOGL", "GOOGL"): 1,
+    ("GOOGL", "MSFT"): 0.26,
+    ("GOOGL", "IBM"): 0.26,  # Include only the relevant entry for IBM
+
+    # ... Repeat the structure for other stocks
+    ("IBM", "AAPL"): 0.38,
+    ("IBM", "GOOGL"): 0.26,
+    ("IBM", "MSFT"): 0.26,
+    ("IBM", "IBM"): 1 } # Include the self-covariance for IBM} # dict with all the covariances between stocks
+returns_dict = {'IBM':0.12,'AAPL':0.1,'GOOGL':0.15,'MSFT':0.2} # dict with the expected returns for each stock
+esg_dict = {'IBM':0.12,'AAPL':0.1,'GOOGL':0.15,'MSFT':0.2} # dict with the ESG scores for each stock
+returns_penalty_term = 20 # penalty term for the returns
+esg_penalty_term = 1 # penalty term for the esg scores
+covariance_penalty_term = 5 # penalty term for the covariance
+weightings_penalty_term = 100 # penalty term for the weightings
 quantum_Sampler = EmbeddingComposite(DWaveSampler()) # The quantum solver we are using
 
 def main():
@@ -50,7 +64,7 @@ def main():
     cv.addCovariance(final_dict,ce.multiply_dict_values(covariance_dict,covariance_penalty_term))
 
     #5: Run it on a quantum computer
-    sampleset = quantum_Sampler.sample_qubo(final_dict, num_reads = 1000, chain_strenght = 150)
+    sampleset = quantum_Sampler.sample_qubo(final_dict, num_reads = 1000, chain_strength = 150)
 
     for datum in islice(sampleset.data(fields=['sample', 'energy']), 5):
         print("Result: ")
