@@ -158,10 +158,10 @@ esg_dict = {
     'V': 0.32,
     'GS': 0.3,
 }
-returns_penalty_term = 20 # penalty term for the returns
+returns_penalty_term = 200 # penalty term for the returns
 esg_penalty_term = 1 # penalty term for the esg scores
-covariance_penalty_term = 5 # penalty term for the covariance
-weightings_penalty_term = 100 # penalty term for the weightings
+covariance_penalty_term = 15 # penalty term for the covariance
+weightings_penalty_term = 9000 # penalty term for the weightings
 quantum_Sampler = EmbeddingComposite(DWaveSampler()) # The quantum solver we are using
 
 def main():
