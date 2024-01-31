@@ -6,8 +6,6 @@ import time
 from sympy import *
 import numpy as np
 import random as random
-import dwave.inspector
-
 
 # Initialize classical and quantum samplers
 classical_Sampler = ExactSolver()
@@ -26,7 +24,8 @@ def createVariableList(tick, weights):
     return variables
 
 # Define a list of tickers
-tickers = ['AAPL', 'GOOGL', 'MSFT', 'AMZN', 'TSLA', 'FB']
+tickers = ['AAPL', 'GOOGL', 'MSFT', 'AMZN', 'TSLA', 'FB', 'NFLX', 'NVDA', 'V', 'PYPL',
+                 'INTC', 'CSCO', 'GS', 'JPM', 'IBM', 'GE', 'DIS', 'VZ', 'KO', 'PEP',]
 
 # Create a list of terms combining tickers and weights
 terms_list = createVariableList(tickers, few.findWeights())
@@ -136,52 +135,50 @@ def multiply_dict_values(input_dict, factor):
     return multiplied_dict
 
 def main():
-    print(terms_list)
+    # print(terms_list)
     expression = create_squared_expression(terms_list)
     print("This is the expression to be squared: " + str(expression))
     expanded_expression = square_and_expand_expression(expression)
     print("This is the final expanded expression after squaring: " + str(expanded_expression))
 
     two_variable_terms = multiply_dict_values(extract_variable_terms(expanded_expression),3000)
+    updateFinalLinearDic(two_variable_terms,stock_values)
 
     # Printing the results of the strictly weighted dictionary
     # for term, coeff in two_variable_terms.items():
     #     print(f"Term: {term}, Coefficient: {coeff}")
-    print("The weightings dictionary: ")
-    print(two_variable_terms)
+    # print("The weightings dictionary: ")
+    # print(two_variable_terms)
 
-    final_dict = subtract_0_1_and_10000_for_msft(subtract_0_1_for_matching_tuples(two_variable_terms))
+    # final_dict = subtract_0_1_and_10000_for_msft(subtract_0_1_for_matching_tuples(two_variable_terms))
 
 
 
     # Printing the results of the weight + arbitrary negative values dictionary
     # for term, coeff in final_dict.items():
     #     print(f"Term: {term}, Coefficient: {coeff}")
-    print("The complex dictionary: ")
-    print(final_dict)
+    # print("The complex dictionary: ")
+    # print(final_dict)
 
-    Q = final_dict
+    # Q = final_dict
 
-    classical_start_time = time.time()
+    # classical_start_time = time.time()
 
     try:
-        sampleset = classical_Sampler.sample_qubo(Q, num_reads=1000,chain_strength = 30)
+        sampleset = classical_Sampler.sample_qubo(Q, num_reads=1000)
     except Exception as e:
         print(f"An error occurred: {e}")
         sampleset = None  # Set sampleset to None to avoid issues later
 
-    classical_end_time = time.time()
+    # classical_end_time = time.time()
 
-    classical_time_difference = classical_end_time - classical_start_time
+    # classical_time_difference = classical_end_time - classical_start_time
 
-    if sampleset:
-        print("The classical solving time was: " + str(classical_time_difference) + " seconds")
-
-    max_chain_bias = max(Q.values())
-    print(str(max_chain_bias))
+    # if sampleset:
+    #     print("The classical solving time was: " + str(classical_time_difference) + " seconds")
 
     quantum_start_time = time.time()
-    sampleset = quantum_Sampler.sample_qubo(Q, num_reads=1000, chain_strength = 150)
+    sampleset = quantum_Sampler.sample_qubo(Q, num_reads=1000)
     quantum_end_time = time.time()
     quantum_time_difference = quantum_end_time - quantum_start_time
     print("The quantum solving time was: " + str(quantum_time_difference) + " seconds")
@@ -191,6 +188,4 @@ def main():
         print(datum)
         print("The final weighting of this portfolio would be: ")
         print(calculate_final_weight(datum))
-
-    dwave.inspector.show(sampleset)
 main()

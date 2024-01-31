@@ -17,18 +17,21 @@ def updateReturns(returns):
 
 #Add Updated returns to final Linear( both tickers are the same) Dictionary
 def updateFinalLinearDic(finalDictionary,returnsDic):
-    
+    print("hi")
     #Go through List of all Variables
-    for stock in finalDictionary:
+    for key, value in finalDictionary.items():
+        stock_symbol_1, stock_symbol_2 = key
         #Split the variable names by format expected to check if they are the same relationship
-        word = stock.split(",")[0]
-        word2 =stock.split(",")[1]
+        
         #if they are, create new element in result. Add the value from master dictionary and the value from updated stock returns dictionary
-        if word==word2:
+        if stock_symbol_1 == stock_symbol_2:
 
-            finalDictionary[stock] = finalDictionary.get(stock, 0)
-            finalDictionary += returnsDic.get(stock.split("_")[0])
-
+            finalDictionary[key] = finalDictionary.get(key, 0)
+            print("I just subtracted this: " + str(returnsDic.get(stock_symbol_1.split("_")[0]))+str(key) + "from" +str(finalDictionary[key]))
+            finalDictionary[key] -= returnsDic.get(stock_symbol_1.split("_")[0])
+            print(str(finalDictionary[key]))
+            
+            
             # finalDictionary[stock] += finalDictionary[stock]+b[word]
     
     #Return the updated linear dictionary
