@@ -7,7 +7,7 @@ q = 0.8
 
 
 # updates the returns by applying the penalty term to them
-def updateE(updateESG,q):
+def updateESG(updateESG,q):
     
     for stock, returned in updateESG.items():   
         result = q*returned  
