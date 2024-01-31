@@ -7,7 +7,7 @@ q = 0.8
 
 
 # updates the returns by applying the penalty term to them
-def updateReturns(returns):
+def updateReturns(returns,q):
     updatedReturns ={}
     for stock, returned in returns.items():   
         result = q*returned  
