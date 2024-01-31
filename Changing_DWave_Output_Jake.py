@@ -18,7 +18,7 @@ def createVariableList(tick,weights): # creating the variables that return as bi
 
 def main():
     print("This code creates a list of all the variables we will have, combining their tickers with their portfolio allocation.")
-    weightings = few.findWeights(0.2,0,6)
+    weightings = few.findWeights(6,0.2,0)
     variableList = createVariableList(stock_tickers, weightings)
     print("This is the final variable list: " + str(variableList))
 
