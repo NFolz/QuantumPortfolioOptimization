@@ -24,8 +24,7 @@ def createVariableList(tick, weights):
     return variables
 
 # Define a list of tickers
-tickers = ['AAPL', 'GOOGL', 'MSFT', 'AMZN', 'TSLA', 'FB', 'NFLX', 'NVDA', 'V', 'PYPL',
-                 'INTC', 'CSCO', 'GS', 'JPM', 'IBM', 'GE', 'DIS', 'VZ', 'KO', 'PEP',]
+tickers = ['AAPL', 'GOOGL', 'MSFT', 'AMZN', 'TSLA', 'FB', 'NFLX', 'NVDA', 'V', 'PYPL']
 
 # Create a list of terms combining tickers and weights
 terms_list = createVariableList(tickers, few.findWeights(10,0.2,0))
