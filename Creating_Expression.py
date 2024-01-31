@@ -92,3 +92,21 @@ def calculate_final_weight(datum):
 def multiply_dict_values(input_dict, factor):
     multiplied_dict = {key: value * factor for key, value in input_dict.items()}
     return multiplied_dict
+
+def calculate_final_weight(datum):
+    """Calculate the final weight based on the sample datum."""
+    final_weight = 0.0
+
+    # Assuming datum is a Sample object and has a 'sample' attribute
+    data_dict = datum.sample
+
+    for key, value in data_dict.items():
+        if value == 1:
+            # Extract the float value after the underscore
+            _, float_value_str = key.split('_')
+            float_value = float(float_value_str)
+
+            # Add the float value to the final weight
+            final_weight += float_value
+
+    return final_weight
