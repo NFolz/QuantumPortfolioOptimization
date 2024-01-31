@@ -7,12 +7,12 @@ q = 0.8
 
 
 # updates the returns by applying the penalty term to them
-def updateESG(returns):
-    updatedReturns ={}
-    for stock, returned in returns.items():   
+def updateE(updateESG,q):
+    
+    for stock, returned in updateESG.items():   
         result = q*returned  
-        updatedReturns.setdefault(stock,result)
-    return updatedReturns
+        updateESG[stock]=result
+    
 
 
 #Add Updated returns to final Linear( both tickers are the same) Dictionary
