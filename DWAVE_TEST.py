@@ -28,7 +28,7 @@ tickers = ['AAPL', 'GOOGL', 'MSFT', 'AMZN', 'TSLA', 'FB', 'NFLX', 'NVDA', 'V', '
                  'INTC', 'CSCO', 'GS', 'JPM', 'IBM', 'GE', 'DIS', 'VZ', 'KO', 'PEP',]
 
 # Create a list of terms combining tickers and weights
-terms_list = createVariableList(tickers, few.findWeights())
+terms_list = createVariableList(tickers, few.findWeights(10,0.2,0))
 
 def create_squared_expression(terms):
     """Create a squared expression based on the input terms."""
@@ -142,7 +142,7 @@ def main():
     print("This is the final expanded expression after squaring: " + str(expanded_expression))
 
     two_variable_terms = multiply_dict_values(extract_variable_terms(expanded_expression),3000)
-    updateFinalLinearDic(two_variable_terms,stock_values)
+    # updateFinalLinearDic(two_variable_terms,stock_values)
 
     # Printing the results of the strictly weighted dictionary
     # for term, coeff in two_variable_terms.items():
@@ -160,7 +160,7 @@ def main():
     # print("The complex dictionary: ")
     # print(final_dict)
 
-    # Q = final_dict
+    Q = two_variable_terms
 
     # classical_start_time = time.time()
 

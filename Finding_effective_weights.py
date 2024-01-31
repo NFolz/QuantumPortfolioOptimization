@@ -27,12 +27,6 @@ def findWeights(granularityFactor,maxPortfolioWeight,minPortfolioWeight): # fuct
     #     print("List "+(str(i+1)) + ":" + str(weightList))
     # print("The maximum potential weighting of this asset in our portfolio is "+ str((sum(weightList)))+ ". This should be as close to "+str(maxPortfolioWeight)+" as possible.") 
     return weightList # return the final list
-
-def main():
-    print('This code finds the asset weights given the maximum and minimum portfolio allocation for one single asset, and the desired granularity factor.')
-    print(findWeights())
-
-main()
     
 
 
