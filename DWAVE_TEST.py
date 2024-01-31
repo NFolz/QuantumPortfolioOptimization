@@ -6,7 +6,6 @@ import time
 from sympy import *
 import numpy as np
 import random as random
-import dwave.inspector
 
 # Initialize classical and quantum samplers
 classical_Sampler = ExactSolver()
@@ -143,6 +142,7 @@ def main():
 
     two_variable_terms = multiply_dict_values(extract_variable_terms(expanded_expression),3000)
     # updateFinalLinearDic(two_variable_terms,stock_values)
+    # addCovariance(two_variable_terms,covariances)
 
     # Printing the results of the strictly weighted dictionary
     # for term, coeff in two_variable_terms.items():
