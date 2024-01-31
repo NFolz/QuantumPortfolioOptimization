@@ -27,7 +27,6 @@ def updateFinalLinearDic(finalDictionary,returnsDic):
         if stock_symbol_1 == stock_symbol_2:
 
             finalDictionary[key] = finalDictionary.get(key, 0)
-            print("I just subtracted this: " + str(returnsDic.get(stock_symbol_1.split("_")[0]))+str(key) + "from" +str(finalDictionary[key]))
             finalDictionary[key] -= returnsDic.get(stock_symbol_1.split("_")[0])
             print(str(finalDictionary[key]))
 
