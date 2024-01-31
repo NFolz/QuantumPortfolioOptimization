@@ -6,6 +6,9 @@ import time
 from sympy import *
 import numpy as np
 import random as random
+from returnsFormater import updateFinalLinearDic
+from dwaveDataFormater import stock_values
+from CovarianceFunctions import covariances, addCovariance
 
 # Initialize classical and quantum samplers
 classical_Sampler = ExactSolver()
