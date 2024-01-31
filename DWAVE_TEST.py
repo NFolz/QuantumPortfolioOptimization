@@ -27,11 +27,10 @@ def createVariableList(tick, weights):
     return variables
 
 # Define a list of tickers
-tickers = ['AAPL', 'GOOGL', 'MSFT', 'AMZN', 'TSLA', 
-                 ]
+tickers = ['AAPL', 'GOOGL', 'MSFT', 'AMZN', 'TSLA', 'FB', 'NFLX', 'NVDA', 'V', 'PYPL']
 
 # Create a list of terms combining tickers and weights
-terms_list = createVariableList(tickers, few.findWeights())
+terms_list = createVariableList(tickers, few.findWeights(10,0.2,0))
 
 def create_squared_expression(terms):
     """Create a squared expression based on the input terms."""
@@ -164,15 +163,15 @@ def main():
     # print("The complex dictionary: ")
     # print(final_dict)
 
-    # Q = final_dict
+    Q = two_variable_terms
 
     # classical_start_time = time.time()
 
-    # try:
-    #     sampleset = classical_Sampler.sample_qubo(Q, num_reads=1000)
-    # except Exception as e:
-    #     print(f"An error occurred: {e}")
-    #     sampleset = None  # Set sampleset to None to avoid issues later
+    try:
+        sampleset = classical_Sampler.sample_qubo(Q, num_reads=1000)
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        sampleset = None  # Set sampleset to None to avoid issues later
 
     # classical_end_time = time.time()
 
@@ -181,15 +180,15 @@ def main():
     # if sampleset:
     #     print("The classical solving time was: " + str(classical_time_difference) + " seconds")
 
-    # quantum_start_time = time.time()
-    # sampleset = quantum_Sampler.sample_qubo(Q, num_reads=1000)
-    # quantum_end_time = time.time()
-    # quantum_time_difference = quantum_end_time - quantum_start_time
-    # print("The quantum solving time was: " + str(quantum_time_difference) + " seconds")
+    quantum_start_time = time.time()
+    sampleset = quantum_Sampler.sample_qubo(Q, num_reads=1000)
+    quantum_end_time = time.time()
+    quantum_time_difference = quantum_end_time - quantum_start_time
+    print("The quantum solving time was: " + str(quantum_time_difference) + " seconds")
     
-    # for datum in islice(sampleset.data(fields=['sample', 'energy']), 5):
-    #     print("Result: ")
-    #     print(datum)
-    #     print("The final weighting of this portfolio would be: ")
-    #     print(calculate_final_weight(datum))
+    for datum in islice(sampleset.data(fields=['sample', 'energy']), 5):
+        print("Result: ")
+        print(datum)
+        print("The final weighting of this portfolio would be: ")
+        print(calculate_final_weight(datum))
 main()
