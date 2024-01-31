@@ -124,6 +124,9 @@ def square_and_expand_expression(expression):
         if '**2' in str(term):
             # Convert the term to a string, replace '**2', and convert back to a symbolic expression
             term_str = str(term).replace('**2', '')
+            
+            term_str = symbols(term_str) # this is my fix
+            
             term = sympify(term_str)
             squared_terms.append(term)
         else:
