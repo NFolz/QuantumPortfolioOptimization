@@ -117,7 +117,7 @@ def calculate_final_portfolio(data):
 
     for datum in data:
         # Assuming datum is a Sample object and has a 'sample' attribute
-        data_dict = datum.get('sample', {})
+        data_dict = getattr(datum, 'sample', {})
 
         for key, value in data_dict.items():
             if value == 1:
