@@ -197,12 +197,6 @@ def main():
         sample_dict = first_datum.get('sample', {})
         print("Result: ")
         print(first_datum)
-    
-    # Calculate the final weights for the first datum
-    
-    result = ce.calculate_final_portfolio(sample_dict)
-
-    print(result)
 
     dwave.inspector.show(sampleset)
 
