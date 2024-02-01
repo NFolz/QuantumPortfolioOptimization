@@ -111,26 +111,22 @@ def calculate_final_weight(datum):
 
     return final_weight
 
-def calculate_final_portfolio(data):
-    """Calculate the final portfolio based on a list of data."""
+def calculate_final_portfolio(sample_dict):
+    """Calculate the final portfolio based on a sample dictionary."""
     final_weights_dict = {}
 
-    for datum in data:
-        # Assuming datum is a Sample object and has a 'sample' attribute
-        data_dict = getattr(datum, 'sample', {})
-
-        for key, value in data_dict.items():
-            if value == 1:
-                parts = key.split('_')
-                if len(parts) == 2:
-                    text_before_underscore, float_value_str = parts
-                    try:
-                        float_value = float(float_value_str)
-                        # Add the float value to the corresponding entry in the final_weights_dict
-                        final_weights_dict[text_before_underscore] = final_weights_dict.get(text_before_underscore, 0.0) + float_value
-                    except ValueError:
-                        print(f"Error converting {float_value_str} to float in key: {key}")
-                        # Handle the error (e.g., log it, continue, or take appropriate action)
+    for key, value in sample_dict.items():
+        if value == 1:
+            parts = key.split('_')
+            if len(parts) == 2:
+                text_before_underscore, float_value_str = parts
+                try:
+                    float_value = float(float_value_str)
+                    # Add the float value to the corresponding entry in the final_weights_dict
+                    final_weights_dict[text_before_underscore] = final_weights_dict.get(text_before_underscore, 0.0) + float_value
+                except ValueError:
+                    print(f"Error converting {float_value_str} to float in key: {key}")
+                    # Handle the error (e.g., log it, continue, or take appropriate action)
 
     return final_weights_dict
 

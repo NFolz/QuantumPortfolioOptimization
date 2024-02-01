@@ -192,15 +192,17 @@ def main():
     #5: Run it on a quantum computer
     sampleset = quantum_Sampler.sample_qubo(final_dict, num_reads = 1000, chain_strength = 150)
 
-    for datum in islice(sampleset.data(fields=['sample', 'energy']), 5):
+    first_datum = next(islice(sampleset.data(fields=['sample', 'energy']), 1), None)
+    if first_datum:
+        sample_dict = first_datum.get('sample', {})
         print("Result: ")
-        print(datum)
-        print("The final weighting of this portfolio would be: ")
-        print(ce.calculate_final_weight(datum))
+        print(first_datum)
     
-    results = ce.calculate_final_portfolio(sampleset.data(fields=['sample','energy']))
+    # Calculate the final weights for the first datum
+    
+    result = ce.calculate_final_portfolio(sample_dict)
 
-    print(results)
+    print(result)
 
     dwave.inspector.show(sampleset)
 
