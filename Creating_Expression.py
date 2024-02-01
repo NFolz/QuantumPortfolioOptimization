@@ -111,29 +111,28 @@ def calculate_final_weight(datum):
 
     return final_weight
 
-def calculate_final_portfolio(datum):
-    """Calculate the final weights based on the sample datum."""
-    final_weights = {}
+def calculate_final_portfolio(data):
+    """Calculate the final portfolio based on a list of data."""
+    final_weights_dict = {}
 
-    # Check if 'sample' attribute exists and is a dictionary
-    if hasattr(datum, 'sample') and isinstance(datum.sample, dict):
-        data_dict = datum.sample
+    for datum in data:
+        # Assuming datum is a Sample object and has a 'sample' attribute
+        data_dict = datum.get('sample', {})
 
         for key, value in data_dict.items():
-            # Check if the value is 1
             if value == 1:
-                # Try to extract the text before the underscore and the float value after the underscore
                 parts = key.split('_')
                 if len(parts) == 2:
                     text_before_underscore, float_value_str = parts
                     try:
                         float_value = float(float_value_str)
-                        # Add the float value to the corresponding entry in the final_weights dictionary
-                        final_weights[text_before_underscore] = final_weights.get(text_before_underscore, 0.0) + float_value
+                        # Add the float value to the corresponding entry in the final_weights_dict
+                        final_weights_dict[text_before_underscore] = final_weights_dict.get(text_before_underscore, 0.0) + float_value
                     except ValueError:
                         print(f"Error converting {float_value_str} to float in key: {key}")
                         # Handle the error (e.g., log it, continue, or take appropriate action)
-    return final_weights
+
+    return final_weights_dict
 
 
 def calculate_sum_of_values(result_dict):
