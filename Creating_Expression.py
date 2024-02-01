@@ -110,3 +110,18 @@ def calculate_final_weight(datum):
             final_weight += float_value
 
     return final_weight
+
+def calculate_sum_of_values(result_dict):
+    # Initialize a new dictionary to store the sums
+    sums_dict = {}
+
+    # Iterate through the key-value pairs in the result dictionary
+    for key, value in result_dict['sample'].items():
+        # Check if the value is 1
+        if value == 1:
+            # Extract the number after the underscore in the key
+            _, number_str = key.split('_')
+            # Convert the number string to a float and add it to the sums_dict
+            sums_dict[key] = sums_dict.get(key, 0) + float(number_str)
+
+    return sums_dict
