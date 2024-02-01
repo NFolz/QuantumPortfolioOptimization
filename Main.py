@@ -198,10 +198,6 @@ def main():
         print("The final weighting of this portfolio would be: ")
         print(ce.calculate_final_weight(datum))
 
-    sums_dict = ce.calculate_sum_of_values(sampleset)
-
-    print(sums_dict)
-    
     dwave.inspector.show(sampleset)
 
 main()
