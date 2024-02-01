@@ -197,6 +197,10 @@ def main():
         print(datum)
         print("The final weighting of this portfolio would be: ")
         print(ce.calculate_final_weight(datum))
+    
+    results = ce.calculate_final_portfolio(islice(sampleset.data(fields=['sample','energy'])))
+
+    print(results)
 
     dwave.inspector.show(sampleset)
 
