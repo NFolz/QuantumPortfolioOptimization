@@ -194,9 +194,11 @@ def main():
 
     first_datum = next(islice(sampleset.data(fields=['sample', 'energy']), 1), None)
     if first_datum:
-        sample_dict = first_datum.get('sample', {})
+        sample_dict = first_datum.sample # THIS IS THE DICTIONARY WITH THE FINAL VALUES FOR THE VARIABLES ****
         print("Result: ")
         print(first_datum)
+        print(str(ce.calculate_final_weight(first_datum)))
+        print(sample_dict)
 
     dwave.inspector.show(sampleset)
 
