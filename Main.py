@@ -200,6 +200,10 @@ def main():
         print(str(ce.calculate_final_weight(first_datum)))
         print(sample_dict)
 
+    ce.process_input_dictionary(sample_dict)
+
+    print(sample_dict)
+
     dwave.inspector.show(sampleset)
 
 main()

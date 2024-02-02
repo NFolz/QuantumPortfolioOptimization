@@ -145,3 +145,17 @@ def calculate_sum_of_values(result_dict):
             sums_dict[key] = sums_dict.get(key, 0) + float(number_str)
 
     return sums_dict
+
+def process_input_dictionary(input_dict):
+    result_dict = {}
+
+    for key, value in input_dict.items():
+        # Split the key into ticker and value parts
+        ticker, val = key.split('_')
+
+        # Check if the value is 1
+        if value == 1:
+            # Add the value to the ticker in the result dictionary
+            result_dict.setdefault(ticker, []).append(float(val))
+
+    return result_dict
