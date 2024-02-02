@@ -161,3 +161,7 @@ def process_input_dictionary(input_dict):
 
     return result_dict
 
+def print_investment_strategy(result_dict):
+    for ticker, value in result_dict.items():
+        print(f"Invest {value * 100:.2f}% in {ticker}")
+
