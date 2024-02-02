@@ -156,6 +156,8 @@ def process_input_dictionary(input_dict):
         # Check if the value is 1
         if value == 1:
             # Add the value to the ticker in the result dictionary
-            result_dict.setdefault(ticker, []).append(float(val))
+            result_dict.setdefault(ticker, 0)
+            result_dict[ticker] += float(val)
 
     return result_dict
+
