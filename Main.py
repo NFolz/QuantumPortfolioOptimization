@@ -42,7 +42,7 @@ returns_dict = {ticker: round(random.uniform(0.05, 0.20), 2) for ticker in stock
 esg_dict = {ticker: round(random.uniform(0.1, 1), 2) for ticker in stock_ticker_list}
 returns_penalty_term = 200 # penalty term for the returns
 esg_penalty_term = 10 # penalty term for the esg scores
-covariance_penalty_term = 10 # penalty term for the covariance
+covariance_penalty_term = 100 # penalty term for the covariance
 weightings_penalty_term = 10000 # penalty term for the weightings
 quantum_Sampler = EmbeddingComposite(DWaveSampler()) # The quantum solver we are using
 
