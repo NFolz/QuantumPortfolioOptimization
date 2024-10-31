@@ -11,11 +11,13 @@ Traditional portfolio optimization methods can be computationally intensive, esp
 Quantum-Assisted Markowitz Optimization: Utilizes D-Wave's quantum processing to optimize asset allocation based on risk and return.
 Efficient Computation: Achieves a significant reduction in complexity over classical methods, enabling better scalability for larger datasets.
 Continuous Benchmarking: Outperforms traditional models and initiates a framework for sustained performance analysis against benchmarks like the S&P 500.
+
 **Technologies Used**
 
 Quantum Computing: D-Wave Ocean SDK
 Programming Language: Python
 Optimization Techniques: Markowitz model, quadratic unconstrained binary optimization (QUBO)
+
 **Future Directions**
 
 This project serves as a foundation for ongoing exploration into advanced quantum methods in financial optimization, with the goal of consistently outperforming market benchmarks and expanding the practical applications of quantum computing in finance.
